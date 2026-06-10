@@ -16,6 +16,15 @@ Ideas: anything for later.
 
 ---
 
+## 2026-06-09, fix off-center dashboard layout (Claude, web session)
+Context: Mike reported the dashboard looked way off center, with a big empty gap between the sidebar and the main content.
+Changed:
+- craig.html: added a base CSS rule (.mnav{display:none;}) right after the .mobile-bar base rule. The mobile nav strip (.mnav) only had a display rule inside the @media (max-width: 860px) block, so on desktop it defaulted to display:block and sat in the flex row between the sidebar and main, pushing everything to the right by about 540px.
+- Fixed: the off-center layout. Main content now sits flush next to the sidebar and the Key dates cards fill the width evenly.
+- Tried but did not work: GitHub's editor find/replace shortcut (cmd+alt+f) opened the global site search instead, and earlier typing leaked into that search box. Clicking directly on the target code line, pressing End, then typing the rule worked cleanly.
+- Still open: nothing for this fix. The kind column still needs adding in Supabase (alter table meetings add column kind text default 'Board';) for non-Board kinds to save, carried over from the previous entry.
+- Ideas: consider a quick visual check at desktop and mobile widths after any layout change, since the mobile and desktop nav share the same flex row.
+
 ## 2026-06-09, key dates on the dashboard, meeting kinds (Claude, web session)
 Context: Mike asked for a key dates section at the top of the dashboard: next board meeting, next marketing meeting, next event, and so on.
 Changed:
