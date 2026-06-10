@@ -6,7 +6,7 @@
 <title>craig</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#EAE7DE;--card:#FBFAF6;--ink:#23211C;--ink-soft:#5C584E;
@@ -16,15 +16,15 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
-  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em;}
+  body{background:var(--paper);color:var(--ink);font-family:'Public Sans',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:'Spectral',Georgia,serif;font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em;}
   button{font-family:inherit;cursor:pointer;}
   input,select,textarea{font-family:inherit;font-size:15px;}
   a{color:var(--pine);}
   .app{display:flex;min-height:100vh;}
   .sidebar{width:236px;flex:0 0 236px;background:var(--card);border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;}
   .brand{display:flex;align-items:baseline;gap:8px;padding:0 8px 8px;margin-bottom:14px;}
-  .brand .mark{font-family:'Fraunces',serif;font-weight:500;font-size:30px;color:var(--ink);letter-spacing:-.02em;}
+  .brand .mark{font-family:'Spectral',serif;font-weight:500;font-size:30px;color:var(--ink);letter-spacing:-.02em;}
   .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--ochre);transform:translateY(-3px);}
   .brand .tag{font-size:11px;color:var(--ink-soft);letter-spacing:.04em;text-transform:uppercase;margin-left:auto;}
   .nav-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;border:none;background:none;color:var(--ink-soft);font-size:14.5px;font-weight:500;width:100%;text-align:left;transition:background .12s,color .12s;}
@@ -48,7 +48,7 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
   .card h3{font-size:18px;margin-bottom:3px;}
   .card .sub{color:var(--ink-soft);font-size:13px;}
-  .stat .num{font-family:'Fraunces',serif;font-size:38px;font-weight:500;color:var(--ink);line-height:1;}
+  .stat .num{font-family:'Spectral',serif;font-size:38px;font-weight:500;color:var(--ink);line-height:1;}
   .stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:8px;}
   .section-row{display:flex;align-items:center;justify-content:space-between;margin:30px 0 14px;}
   .section-row h2{font-size:21px;}
@@ -84,12 +84,12 @@
   .hero .eyebrow{color:rgba(255,255,255,.7);}
   .hero h3{color:#fff;font-size:25px;}
   .hero .sub{color:rgba(255,255,255,.8);}
-  .hero .when{font-family:'Fraunces',serif;font-size:20px;margin:14px 0 4px;}
+  .hero .when{font-family:'Spectral',serif;font-size:20px;margin:14px 0 4px;}
   .hero .count{font-size:13px;color:rgba(255,255,255,.78);}
   .hero .btn.subtle{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff;}
   .hero .btn.subtle:hover{background:rgba(255,255,255,.26);}
   .empty{text-align:center;padding:46px 20px;color:var(--ink-soft);}
-  .empty .big{font-family:'Fraunces',serif;font-size:21px;color:var(--ink);margin-bottom:6px;}
+  .empty .big{font-family:'Spectral',serif;font-size:21px;color:var(--ink);margin-bottom:6px;}
   .ppl{display:flex;flex-direction:column;gap:8px;}
   .person{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:var(--card);}
   .person .nm{flex:1;}
@@ -117,23 +117,23 @@
   .doc-link:hover{text-decoration:underline;}
   .tally{display:flex;gap:18px;margin:12px 0;}
   .tally .t{text-align:center;}
-  .tally .t .n{font-family:'Fraunces',serif;font-size:26px;line-height:1;}
+  .tally .t .n{font-family:'Spectral',serif;font-size:26px;line-height:1;}
   .tally .t .l{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
   .signline{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);}
   .signline:last-child{border-bottom:none;}
-  .signed{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--pine);}
+  .signed{font-family:'Spectral',serif;font-style:italic;font-size:17px;color:var(--pine);}
   .mobile-bar{display:none;}
   #busy{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;padding:8px 15px;border-radius:20px;font-size:13px;font-weight:600;box-shadow:var(--shadow);display:none;z-index:80;}
   #busy.on{display:block;}
   #toast{position:fixed;left:50%;transform:translateX(-50%);top:16px;background:var(--clay);color:#fff;padding:11px 16px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;z-index:90;max-width:92%;}
   #toast.on{display:block;}
   .fatal{max-width:520px;margin:80px auto;text-align:center;}
-  .fatal .big{font-family:'Fraunces',serif;font-size:26px;margin-bottom:10px;}
+  .fatal .big{font-family:'Spectral',serif;font-size:26px;margin-bottom:10px;}
   .fatal .detail{background:var(--line-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink-soft);text-align:left;margin:16px 0;word-break:break-word;font-family:ui-monospace,monospace;}
   @media(max-width:860px){
     .app{flex-direction:column;}.sidebar{display:none;}
     .mobile-bar{display:flex;position:sticky;top:0;z-index:40;background:var(--card);border-bottom:1px solid var(--line);align-items:center;gap:10px;padding:12px 16px;}
-    .mobile-bar .mark{font-family:'Fraunces',serif;font-size:24px;}
+    .mobile-bar .mark{font-family:'Spectral',serif;font-size:24px;}
     .mobile-bar .dot{width:6px;height:6px;border-radius:50%;background:var(--ochre);transform:translateY(-7px);margin-left:-4px;}
     .mobile-bar select{margin-left:auto;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:140px;}
     .mnav{display:flex;gap:7px;overflow-x:auto;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:55px;z-index:39;}
@@ -427,7 +427,7 @@ function viewGrants(){
   const card=g=>{ const t=tally(g); const q=quorum();
     return `<div class="card" style="margin-bottom:12px;">
       <div style="display:flex;align-items:flex-start;gap:12px;"><div style="flex:1;"><h3 style="font-size:18px;">${esc(g.recipient)}</h3><div class="sub">${esc(g.purpose)}</div></div>
-        <div style="text-align:right;"><div style="font-family:'Fraunces',serif;font-size:22px;">${money(g.amount)}</div>
+        <div style="text-align:right;"><div style="font-family:'Spectral',serif;font-size:22px;">${money(g.amount)}</div>
           <span class="pill ${g.status==='approved'?'green':g.status==='declined'?'clay':'amber'}"><span class="pdot"></span>${g.status[0].toUpperCase()+g.status.slice(1)}</span></div></div>
       ${g.notes?`<div class="note" style="margin-top:12px;">${esc(g.notes)}</div>`:''}
       <div class="tally">
@@ -487,7 +487,7 @@ function viewSignatures(){
         <span class="pill ${ex?'green':'amber'}"><span class="pdot"></span>${ex?'Fully executed':have+' of '+need+' signed'}</span></div>
       <div class="note" style="margin-top:12px;">${esc(s.body)}</div>
       <div style="margin-top:14px;">${activeMembers().map(p=>{ const sg=(s.signed||{})[p.id];
-        return `<div class="signline"><span>${esc(p.name)} <span class="sub">· ${esc(p.role)}</span></span>${sg?`<span class="signed">${esc(p.name)} <span class="sub" style="font-style:normal;font-family:'Hanken Grotesk';">${fmtShort(sg)}</span></span>`:`<span class="sub">Not signed</span>`}</div>`; }).join('')}</div>
+        return `<div class="signline"><span>${esc(p.name)} <span class="sub">· ${esc(p.role)}</span></span>${sg?`<span class="signed">${esc(p.name)} <span class="sub" style="font-style:normal;font-family:'Public Sans';">${fmtShort(sg)}</span></span>`:`<span class="sub">Not signed</span>`}</div>`; }).join('')}</div>
       <div class="modal-foot" style="justify-content:space-between;"><button class="btn danger sm" onclick="delSig('${s.id}')">Remove</button>
         ${mine?`<button class="btn subtle" onclick="unsign('${s.id}')">Remove my signature</button>`:`<button class="btn" onclick="sign('${s.id}')">Sign as ${esc((acting().name||'').split(' ')[0])}</button>`}</div></div>`; };
   return `<div class="page-head"><div class="eyebrow">Sign-offs & consents</div><h1>Signatures</h1><p>Collect board sign-offs on resolutions and consents. Each person signs and craig records their name and the time.</p></div>
