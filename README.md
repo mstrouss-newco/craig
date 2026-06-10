@@ -13,8 +13,8 @@ Both are plain HTML files. There is no build step, no framework, and no server t
 ## What it does
 
 **Dashboard (craig.html), for staff:**
-- Dashboard: next meeting, pending votes, pending signatures, latest updates, board at a glance.
-- Meetings: schedule meetings, mark attendance, see a quorum bar.
+- Dashboard: a Key dates strip up top (next board meeting, next marketing meeting, next event, and so on, one card per kind), plus the next meeting, pending votes, pending signatures, latest updates, and board at a glance.
+- Meetings: schedule meetings (each tagged with a kind: Board, Marketing, Committee, Fundraiser, or Event, which is what feeds the Key dates strip), mark attendance, and see a quorum bar.
 - Documents: share decks, minutes, policies (by link), optionally tied to a meeting.
 - Updates: post notes to the board between meetings.
 - Grants: submit grants, collect votes, and a per director "who has responded" tracker. A grant auto approves once enough directors approve.
