@@ -16,6 +16,17 @@ Ideas: anything for later.
 
 ---
 
+## 2026-06-09, key dates on the dashboard, meeting kinds (Claude, web session)
+Context: Mike asked for a key dates section at the top of the dashboard: next board meeting, next marketing meeting, next event, and so on.
+Changed:
+- craig.html: added a Key dates strip at the very top of the dashboard. It shows the next upcoming date for each meeting kind (Board, Marketing, Committee, Fundraiser, Event), each as a small card with the date, the meeting title, and how far away it is, or "Nothing scheduled" if that kind has none coming up. Added a MEETING_KINDS list, upcomingMeetings() and nextOfKind() helpers, and a keyDatesHtml() builder. Meetings now carry a kind: the schedule-meeting form has a Kind selector (defaults to Board), saveMeeting stores it, and each meeting row shows a kind pill.
+- approve.html: the portal now reads a meeting's kind too and labels the next-meeting block (for example "Next marketing meeting") instead of always "Next meeting".
+- Existing meetings with no kind default to Board everywhere, so nothing breaks before the database column exists.
+Fixed: during this work an earlier editor mishap committed a craig.html with a duplicated helper block and a missing keyDatesHtml (it threw "Illegal return statement" and the dashboard went blank). Rebuilt craig.html cleanly from the last good commit, re-applied every edit, syntax-checked it, and recommitted. The live dashboard renders the Key dates section correctly now.
+Still open (needs Mike): the meetings table in Supabase does not yet have a kind column, so picking a kind other than Board when scheduling will fail to save until it is added. One line in the Supabase SQL editor fixes it: alter table meetings add column kind text default 'Board'; After that, marketing, committee, fundraiser, and event meetings will save and show up in their Key dates cards. Reading and the dashboard already work without it.
+Tried but worth knowing: pasting a large file into GitHub's web editor can silently fail to register as a change (commit button stays disabled) unless you first click directly on the code text to focus the editor. Also the web editor's Restore can bring back a stale draft, which is what caused the broken commit above. Verify on the live Pages URL with a cache-busting query (for example ?v=2) since the old file can be cached.
+Ideas: let staff add a freeform event kind, show the next few dates per kind rather than just the next one, and a tiny calendar view.
+
 ## 2026-06-09, go live on GitHub Pages, new fonts, landing page (Claude, web session)
 Context: get craig live on GitHub Pages for testing, give it a landing page, and move the type away from the common Fraunces and Hanken Grotesk pairing.
 Changed:
