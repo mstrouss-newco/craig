@@ -16,6 +16,16 @@ Ideas: anything for later.
 
 ---
 
+## 2026-06-09, landing page redesign (Claude, web session)
+Context: Mike wanted a stronger narrative aimed at nonprofits and executive directors who manage a board and grants, with no talk of how the tool is built, plus a complete visual redesign with a modern Fortune 500 or slick startup feel (the old serif look read as generic).
+Changed:
+- index.html: full rebuild. New dark, premium look using Inter for text and Space Grotesk for headings, a gradient brand accent (blue to purple to teal), a glassy sticky nav, a centered hero with a gradient headline and a stat row, a six card feature grid (Meetings, Grants, Signatures, Documents, Updates, Governance), two role panels (command center for the executive director, director portal for board members), a gradient call to action band, and a footer.
+- - Narrative now leads with running the board and grants without the chaos, and positions craig as the operating system for executive directors. Removed the entire how it is built section and any mention of single file HTML, REST, frameworks, or GitHub Pages.
+  - Fixed: nothing functional. Buttons still point at craig.html (dashboard) and approve.html (portal). The font swap from Spectral and Public Sans only affected this landing page; the dashboard and portal still use their own design system.
+  - Tried but did not work: pasted the full file into the GitHub editor via clipboard, which worked once the editor was focused by clicking a code line first. First pass had a double marker on the role panel list items (a leftover li:before square next to the green check); removed the li:before rule and re-pasted to fix it.
+  - Still open: nothing for this. The kind column still needs adding in Supabase for non-Board Key dates to populate, carried over from earlier.
+  - Ideas: a short testimonial or logo strip, and a small product screenshot in the hero, would push it further toward a polished SaaS landing page if Mike wants.
+
 ## 2026-06-09, fix off-center dashboard layout (Claude, web session)
 Context: Mike reported the dashboard looked way off center, with a big empty gap between the sidebar and the main content.
 Changed:
