@@ -16,6 +16,18 @@ Ideas: anything for later.
 
 ---
 
+## 2026-06-09, go live on GitHub Pages, new fonts, landing page (Claude, web session)
+Context: get craig live on GitHub Pages for testing, give it a landing page, and move the type away from the common Fraunces and Hanken Grotesk pairing.
+Changed:
+- index.html: new file. A public landing page that explains what craig does (the seven jobs, the staff dashboard vs board portal split, and how it is built) and links on to craig.html and approve.html. Styled with the existing design tokens (paper, pine, ochre, clay) so it matches the apps. This is now the front door GitHub Pages serves at the root.
+- craig.html and approve.html: swapped the fonts. Headings and the wordmark are now Spectral (was Fraunces), body is now Public Sans (was Hanken Grotesk). Changed the Google Fonts link and every font-family in both files. The italic "signed" style in craig.html is covered by Spectral italic, which the font link now loads.
+- README.md: documented the landing page in the intro, the repo layout, and the architecture notes (including the live URL). Updated the Design system fonts line to Spectral plus Public Sans, with a note on why (Public Sans is a civic typeface, fitting for a nonprofit). Added a standing rule: when a feature is added or changed in a meaningful way, update index.html too so the landing page keeps describing what craig actually does.
+- Repo setting: enabled GitHub Pages, deploying from main, root folder. Live at https://mstrouss-newco.github.io/craig/ .
+Fixed: nothing broken before, this was additive.
+Tried but did not work: nothing notable. Note for the next agent: GitHub's web editor does not run pasted HTML in Preview, so verify rendering on the live Pages URL, not in the editor preview.
+Still open: same list as the entry below (personal links in the dashboard, email sending, real file uploads, binding e signatures, tightening database access rules). The font choice is opinionated, easy to revisit with Mike if he wants a different feel.
+Ideas: a small "what changed" note on the landing page, and a favicon, would both be nice touches later.
+
 ## 2026-06-09, initial build and Supabase wiring (Claude, web app session, pre Claude Code)
 
 **Context.** Built craig from scratch with Mike over one working session, then wired it to a live Supabase backend. This entry is the starting point for the repo.
