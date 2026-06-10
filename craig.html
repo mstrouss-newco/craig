@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>craig</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EAE7DE;--card:#FBFAF6;--ink:#23211C;--ink-soft:#5C584E;
+    --pine:#2F5D4F;--pine-deep:#244A3F;--ochre:#BC8439;--clay:#A8503C;
+    --line:#D9D3C6;--line-soft:#E7E2D6;--shadow:0 1px 2px rgba(35,33,28,.05),0 8px 24px rgba(35,33,28,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em;}
+  button{font-family:inherit;cursor:pointer;}
+  input,select,textarea{font-family:inherit;font-size:15px;}
+  a{color:var(--pine);}
+  .app{display:flex;min-height:100vh;}
+  .sidebar{width:236px;flex:0 0 236px;background:var(--card);border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;}
+  .brand{display:flex;align-items:baseline;gap:8px;padding:0 8px 8px;margin-bottom:14px;}
+  .brand .mark{font-family:'Fraunces',serif;font-weight:500;font-size:30px;color:var(--ink);letter-spacing:-.02em;}
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--ochre);transform:translateY(-3px);}
+  .brand .tag{font-size:11px;color:var(--ink-soft);letter-spacing:.04em;text-transform:uppercase;margin-left:auto;}
+  .nav-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;border:none;background:none;color:var(--ink-soft);font-size:14.5px;font-weight:500;width:100%;text-align:left;transition:background .12s,color .12s;}
+  .nav-item:hover{background:var(--line-soft);color:var(--ink);}
+  .nav-item.active{background:var(--pine);color:#fff;}
+  .nav-item .badge{margin-left:auto;background:var(--ochre);color:#fff;font-size:11px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 5px;}
+  .nav-item.active .badge{background:rgba(255,255,255,.28);}
+  .nav-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line-soft);}
+  .acting{font-size:11.5px;color:var(--ink-soft);padding:0 8px 6px;letter-spacing:.03em;text-transform:uppercase;}
+  .acting-sel{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);}
+  .conn{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-soft);padding:9px 8px 0;}
+  .conn .cd{width:8px;height:8px;border-radius:50%;background:var(--pine);}
+  .main{flex:1;min-width:0;padding:34px 40px 64px;max-width:1040px;}
+  .page-head{margin-bottom:26px;}
+  .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:7px;}
+  .page-head h1{font-size:33px;}
+  .page-head p{color:var(--ink-soft);margin:7px 0 0;max-width:60ch;}
+  .grid{display:grid;gap:16px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+  .card h3{font-size:18px;margin-bottom:3px;}
+  .card .sub{color:var(--ink-soft);font-size:13px;}
+  .stat .num{font-family:'Fraunces',serif;font-size:38px;font-weight:500;color:var(--ink);line-height:1;}
+  .stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:8px;}
+  .section-row{display:flex;align-items:center;justify-content:space-between;margin:30px 0 14px;}
+  .section-row h2{font-size:21px;}
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:9px;border:1px solid var(--pine);background:var(--pine);color:#fff;font-weight:600;font-size:14px;transition:background .12s,transform .05s;}
+  .btn:hover{background:var(--pine-deep);}
+  .btn:active{transform:translateY(1px);}
+  .btn.ghost{background:transparent;color:var(--pine);}
+  .btn.ghost:hover{background:var(--line-soft);}
+  .btn.sm{padding:6px 11px;font-size:13px;}
+  .btn.subtle{background:var(--card);border-color:var(--line);color:var(--ink);}
+  .btn.subtle:hover{background:var(--line-soft);}
+  .btn.danger{background:transparent;border-color:var(--clay);color:var(--clay);}
+  .btn.danger:hover{background:rgba(168,80,60,.08);}
+  .row{display:flex;align-items:center;gap:14px;padding:15px 18px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;box-shadow:var(--shadow);}
+  .row .meta{flex:1;min-width:0;}
+  .row .meta .t{font-weight:600;font-size:15.5px;}
+  .row .meta .d{color:var(--ink-soft);font-size:13px;margin-top:2px;}
+  .row .right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--line-soft);color:var(--ink-soft);}
+  .pill.green{background:rgba(47,93,79,.12);color:var(--pine);}
+  .pill.amber{background:rgba(188,132,57,.15);color:var(--ochre);}
+  .pill.clay{background:rgba(168,80,60,.13);color:var(--clay);}
+  .pill .pdot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--pine);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+  .avatar.sm{width:26px;height:26px;font-size:11px;}
+  .avstack{display:flex;}
+  .avstack .avatar{margin-left:-7px;border:2px solid var(--card);}
+  .avstack .avatar:first-child{margin-left:0;}
+  .bar{height:9px;border-radius:6px;background:var(--line-soft);overflow:hidden;margin-top:10px;}
+  .bar > span{display:block;height:100%;background:var(--pine);border-radius:6px;transition:width .3s;}
+  .bar.amber > span{background:var(--ochre);}
+  .hero{background:linear-gradient(135deg,var(--pine),var(--pine-deep));color:#fff;border:none;}
+  .hero .eyebrow{color:rgba(255,255,255,.7);}
+  .hero h3{color:#fff;font-size:25px;}
+  .hero .sub{color:rgba(255,255,255,.8);}
+  .hero .when{font-family:'Fraunces',serif;font-size:20px;margin:14px 0 4px;}
+  .hero .count{font-size:13px;color:rgba(255,255,255,.78);}
+  .hero .btn.subtle{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff;}
+  .hero .btn.subtle:hover{background:rgba(255,255,255,.26);}
+  .empty{text-align:center;padding:46px 20px;color:var(--ink-soft);}
+  .empty .big{font-family:'Fraunces',serif;font-size:21px;color:var(--ink);margin-bottom:6px;}
+  .ppl{display:flex;flex-direction:column;gap:8px;}
+  .person{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:11px;background:var(--card);}
+  .person .nm{flex:1;}
+  .person .nm .role{font-size:12px;color:var(--ink-soft);}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+  .seg button{border:none;background:var(--card);padding:7px 12px;font-size:12.5px;font-weight:600;color:var(--ink-soft);border-left:1px solid var(--line);}
+  .seg button:first-child{border-left:none;}
+  .seg button.on-green{background:var(--pine);color:#fff;}
+  .seg button.on-amber{background:var(--ochre);color:#fff;}
+  .seg button.on-clay{background:var(--clay);color:#fff;}
+  .scrim{position:fixed;inset:0;background:rgba(35,33,28,.42);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;z-index:50;overflow:auto;}
+  .modal{background:var(--card);border-radius:16px;width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:26px 26px 22px;}
+  .modal h2{font-size:23px;margin-bottom:4px;}
+  .modal .msub{color:var(--ink-soft);font-size:13.5px;margin-bottom:18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  .field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);}
+  .field textarea{min-height:80px;resize:vertical;}
+  .field .hint{font-size:12px;color:var(--ink-soft);margin-top:5px;}
+  .frow{display:flex;gap:12px;}
+  .frow .field{flex:1;}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;}
+  .note{background:var(--line-soft);border-radius:11px;padding:13px 15px;font-size:13px;color:var(--ink-soft);margin-top:6px;}
+  .doc-link{color:var(--pine);font-weight:600;text-decoration:none;font-size:13.5px;}
+  .doc-link:hover{text-decoration:underline;}
+  .tally{display:flex;gap:18px;margin:12px 0;}
+  .tally .t{text-align:center;}
+  .tally .t .n{font-family:'Fraunces',serif;font-size:26px;line-height:1;}
+  .tally .t .l{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+  .signline{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);}
+  .signline:last-child{border-bottom:none;}
+  .signed{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--pine);}
+  .mobile-bar{display:none;}
+  #busy{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;padding:8px 15px;border-radius:20px;font-size:13px;font-weight:600;box-shadow:var(--shadow);display:none;z-index:80;}
+  #busy.on{display:block;}
+  #toast{position:fixed;left:50%;transform:translateX(-50%);top:16px;background:var(--clay);color:#fff;padding:11px 16px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;z-index:90;max-width:92%;}
+  #toast.on{display:block;}
+  .fatal{max-width:520px;margin:80px auto;text-align:center;}
+  .fatal .big{font-family:'Fraunces',serif;font-size:26px;margin-bottom:10px;}
+  .fatal .detail{background:var(--line-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--ink-soft);text-align:left;margin:16px 0;word-break:break-word;font-family:ui-monospace,monospace;}
+  @media(max-width:860px){
+    .app{flex-direction:column;}.sidebar{display:none;}
+    .mobile-bar{display:flex;position:sticky;top:0;z-index:40;background:var(--card);border-bottom:1px solid var(--line);align-items:center;gap:10px;padding:12px 16px;}
+    .mobile-bar .mark{font-family:'Fraunces',serif;font-size:24px;}
+    .mobile-bar .dot{width:6px;height:6px;border-radius:50%;background:var(--ochre);transform:translateY(-7px);margin-left:-4px;}
+    .mobile-bar select{margin-left:auto;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:140px;}
+    .mnav{display:flex;gap:7px;overflow-x:auto;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:55px;z-index:39;}
+    .mnav button{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);padding:7px 13px;border-radius:20px;font-size:13.5px;font-weight:600;}
+    .mnav button.active{background:var(--pine);color:#fff;border-color:var(--pine);}
+    .main{padding:22px 16px 60px;}.page-head h1{font-size:27px;}.g2,.g3{grid-template-columns:1fr;}.frow{flex-direction:column;gap:0;}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+  :focus-visible{outline:2px solid var(--ochre);outline-offset:2px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><span class="mark">craig</span><span class="dot"></span><span class="tag">board</span></div>
+    <nav id="nav"></nav>
+    <div class="nav-foot">
+      <div class="acting">Acting as</div>
+      <select class="acting-sel" id="actingSel" onchange="setActing(this.value)"></select>
+      <div class="conn"><span class="cd"></span><span id="connTxt">Connected to your project</span></div>
+    </div>
+  </aside>
+  <div class="mobile-bar">
+    <span class="mark">craig</span><span class="dot"></span>
+    <select id="actingSelM" onchange="setActing(this.value)"></select>
+  </div>
+  <div class="mnav" id="mnav"></div>
+  <main class="main" id="view"></main>
+</div>
+<div id="modalRoot"></div>
+<div id="busy">Working...</div>
+<div id="toast"></div>
+
+<script>
+/* ============ connection to your Supabase project ============ */
+const SB_URL = 'https://nhfymtungjcspgxvaexd.supabase.co';
+const SB_KEY = 'sb_publishable_CY4d7M7zl4AjcLGVltF5LQ_SPQRuYNS';
+/* If data ever fails to load, the line above can be swapped for the legacy key:
+   sb_... won't work? use the JWT one that starts with eyJ...  */
+const REST = SB_URL + '/rest/v1/';
+const H = () => ({'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'});
+async function sbGet(path){ const r=await fetch(REST+path,{headers:H()}); if(!r.ok) throw new Error('Load failed ('+r.status+'): '+await r.text()); return r.json(); }
+async function sbInsert(table,row){ const r=await fetch(REST+table,{method:'POST',headers:{...H(),'Prefer':'return=representation'},body:JSON.stringify(row)}); if(!r.ok) throw new Error('Save failed ('+r.status+'): '+await r.text()); return r.json(); }
+async function sbUpdate(table,filter,patch){ const r=await fetch(REST+table+'?'+filter,{method:'PATCH',headers:{...H(),'Prefer':'return=representation'},body:JSON.stringify(patch)}); if(!r.ok) throw new Error('Update failed ('+r.status+'): '+await r.text()); return r.json(); }
+async function sbDelete(table,filter){ const r=await fetch(REST+table+'?'+filter,{method:'DELETE',headers:H()}); if(!r.ok) throw new Error('Delete failed ('+r.status+'): '+await r.text()); }
+async function sbUpsert(table,row,onconflict){ const r=await fetch(REST+table+'?on_conflict='+onconflict,{method:'POST',headers:{...H(),'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(row)}); if(!r.ok) throw new Error('Save failed ('+r.status+'): '+await r.text()); return r.json(); }
+
+/* ============ helpers ============ */
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const initials = n => (n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const parseLocal = iso => { if(!iso) return null; const s=String(iso);
+  if(s.length===10){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); } return new Date(s); };
+const fmtDate = iso => { const d=parseLocal(iso); return d?d.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'}):''; };
+const fmtShort = iso => { const d=parseLocal(iso); return d?d.toLocaleDateString('en-US',{month:'short',day:'numeric'}):''; };
+const money = n => '$'+Number(n||0).toLocaleString('en-US');
+const daysUntil = iso => { const d=parseLocal(iso); const t=new Date(); t.setHours(0,0,0,0); return Math.round((d-t)/86400000); };
+const todayStr = () => { const d=new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
+
+/* ============ data ============ */
+let db = {org:'', members:[], meetings:[], documents:[], updates:[], grants:[], signatures:[], actingId:null};
+function loadActing(){ try{return localStorage.getItem('craig.acting');}catch(e){return null;} }
+function saveActing(id){ try{localStorage.setItem('craig.acting',id);}catch(e){} }
+
+async function loadAll(){
+  const [settings,members,meetings,attendance,documents,updates,grants,votes,consents,signoffs] = await Promise.all([
+    sbGet('settings?select=*'),
+    sbGet('members?select=*&order=created_at.asc'),
+    sbGet('meetings?select=*&order=meeting_date.desc'),
+    sbGet('attendance?select=*'),
+    sbGet('documents?select=*&order=doc_date.desc'),
+    sbGet('updates?select=*&order=update_date.desc'),
+    sbGet('grants?select=*&order=grant_date.desc'),
+    sbGet('grant_votes?select=*'),
+    sbGet('consents?select=*&order=consent_date.desc'),
+    sbGet('signoffs?select=*')
+  ]);
+  db.org = (settings[0] && settings[0].org_name) || 'Your Foundation';
+  db.members = members.map(m=>({id:m.id,name:m.name,role:m.role,email:m.email,termEnd:m.term_end,status:m.status,token:m.access_token}));
+  db.meetings = meetings.map(mt=>({id:mt.id,title:mt.title,date:mt.meeting_date,time:mt.meeting_time,location:mt.location,agenda:mt.agenda,
+    attendance:Object.fromEntries(attendance.filter(a=>a.meeting_id===mt.id).map(a=>[a.member_id,a.status]))}));
+  db.documents = documents.map(d=>({id:d.id,title:d.title,type:d.doc_type,date:d.doc_date,meetingId:d.meeting_id,link:d.link,note:d.note}));
+  db.updates = updates.map(u=>({id:u.id,title:u.title,body:u.body,authorId:u.author_id,date:u.update_date}));
+  db.grants = grants.map(g=>({id:g.id,recipient:g.recipient,amount:Number(g.amount),purpose:g.purpose,notes:g.notes,status:g.status,date:g.grant_date,
+    votes:Object.fromEntries(votes.filter(v=>v.grant_id===g.id).map(v=>[v.member_id,v.vote]))}));
+  db.signatures = consents.map(c=>({id:c.id,title:c.title,type:c.consent_type,body:c.body,date:c.consent_date,requireAll:c.require_all,
+    signed:Object.fromEntries(signoffs.filter(s=>s.consent_id===c.id).map(s=>[s.member_id,(s.signed_at||'').slice(0,10)]))}));
+  const saved = loadActing();
+  if(!db.actingId || !db.members.find(m=>m.id===db.actingId)){
+    db.actingId = (db.members.find(m=>m.id===saved) ? saved : (db.members.find(m=>m.role==='Chair')||db.members[0]||{}).id) || null;
+  }
+}
+
+const member = id => db.members.find(m=>m.id===id) || {name:'Unknown',role:''};
+const acting = () => member(db.actingId);
+const activeMembers = () => db.members.filter(m=>m.status==='active');
+const quorum = () => Math.max(1, Math.floor(activeMembers().length/2)+1);
+
+/* ============ busy + errors ============ */
+function setBusy(on){ document.getElementById('busy').classList.toggle('on',on); }
+let toastTimer;
+function showError(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('on'),7000); console.error(msg); }
+function showFatal(e){
+  document.getElementById('view').innerHTML = `<div class="fatal">
+    <div class="big">craig can't reach your project</div>
+    <p style="color:var(--ink-soft)">It couldn't load data from Supabase. Usually that's the key or the project URL. The exact message is below.</p>
+    <div class="detail">${esc(e.message||String(e))}</div>
+    <button class="btn" onclick="boot()">Try again</button></div>`;
+  console.error(e);
+}
+async function act(fn, after){
+  try{ setBusy(true); await fn(); await loadAll(); render(); if(after) after(); }
+  catch(e){ showError(e.message||String(e)); }
+  finally{ setBusy(false); }
+}
+
+/* ============ nav ============ */
+let activeView = 'dashboard';
+const NAV = [['dashboard','Dashboard'],['meetings','Meetings'],['documents','Documents'],['updates','Updates'],['grants','Grants'],['signatures','Signatures'],['governance','Governance']];
+function pendingCount(key){
+  if(key==='grants') return db.grants.filter(g=>g.status==='pending').length;
+  if(key==='signatures') return db.signatures.filter(s=>!isExecuted(s)).length;
+  return 0;
+}
+function renderNav(){
+  document.getElementById('nav').innerHTML = NAV.map(([k,label])=>{
+    const n=pendingCount(k);
+    return `<button class="nav-item ${activeView===k?'active':''}" onclick="go('${k}')"><span>${label}</span>${n?`<span class="badge">${n}</span>`:''}</button>`;
+  }).join('');
+  document.getElementById('mnav').innerHTML = NAV.map(([k,label])=>`<button class="${activeView===k?'active':''}" onclick="go('${k}')">${label}</button>`).join('');
+  const opts = db.members.map(m=>`<option value="${m.id}" ${m.id===db.actingId?'selected':''}>${esc(m.name)} (${esc(m.role)})</option>`).join('');
+  document.getElementById('actingSel').innerHTML = opts;
+  document.getElementById('actingSelM').innerHTML = opts;
+}
+function go(v){ activeView=v; render(); window.scrollTo(0,0); }
+function setActing(id){ db.actingId=id; saveActing(id); render(); }
+
+function render(){
+  renderNav();
+  document.getElementById('view').innerHTML = ({
+    dashboard:viewDashboard,meetings:viewMeetings,documents:viewDocuments,updates:viewUpdates,grants:viewGrants,signatures:viewSignatures,governance:viewGovernance
+  }[activeView])();
+}
+
+/* ============ dashboard ============ */
+function nextMeeting(){
+  const up = db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date));
+  return up[0]||null;
+}
+function viewDashboard(){
+  const hour=new Date().getHours();
+  const greet=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
+  const mt=nextMeeting();
+  const pg=db.grants.filter(g=>g.status==='pending').length;
+  const ps=db.signatures.filter(s=>!isExecuted(s)).length;
+  const recent=[...db.updates].sort((a,b)=>parseLocal(b.date)-parseLocal(a.date)).slice(0,2);
+  let hero;
+  if(mt){ const dl=daysUntil(mt.date);
+    hero=`<div class="card hero"><div class="eyebrow">Next meeting</div><h3>${esc(mt.title)}</h3>
+      <div class="when">${fmtDate(mt.date)} · ${esc(mt.time)}</div>
+      <div class="count">${dl===0?'Today':dl===1?'Tomorrow':'in '+dl+' days'} · ${esc(mt.location)}</div>
+      <div style="margin-top:18px;"><button class="btn subtle" onclick="go('meetings');setTimeout(()=>openMeeting('${mt.id}'),0)">Open meeting</button></div></div>`;
+  } else {
+    hero=`<div class="card hero"><div class="eyebrow">Next meeting</div><h3>Nothing on the calendar</h3>
+      <div class="sub" style="margin-top:8px;">Schedule the next board meeting to get started.</div>
+      <div style="margin-top:16px;"><button class="btn subtle" onclick="go('meetings')">Go to meetings</button></div></div>`;
+  }
+  return `<div class="page-head"><div class="eyebrow">${esc(db.org)}</div>
+    <h1>${greet}, ${esc((acting().name||'there').split(' ')[0])}.</h1><p>Here's where the board stands today.</p></div>
+  <div class="grid g2">${hero}
+    <div class="grid" style="gap:16px;">
+      <div class="card stat"><div class="num">${pg}</div><div class="lbl">Grants awaiting a vote</div>${pg?`<div style="margin-top:12px;"><button class="btn ghost sm" onclick="go('grants')">Review grants</button></div>`:''}</div>
+      <div class="card stat"><div class="num">${ps}</div><div class="lbl">Documents awaiting signatures</div>${ps?`<div style="margin-top:12px;"><button class="btn ghost sm" onclick="go('signatures')">Open signing</button></div>`:''}</div>
+    </div></div>
+  <div class="section-row"><h2>Latest updates</h2><button class="btn ghost sm" onclick="go('updates')">All updates</button></div>
+  ${recent.length?recent.map(u=>`<div class="row"><div class="avatar">${initials(member(u.authorId).name)}</div>
+    <div class="meta"><div class="t">${esc(u.title)}</div><div class="d">${esc(member(u.authorId).name)} · ${fmtShort(u.date)}</div></div></div>`).join(''):`<div class="note">No updates yet.</div>`}
+  <div class="section-row"><h2>Board at a glance</h2><button class="btn ghost sm" onclick="go('governance')">Manage board</button></div>
+  <div class="card"><div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+    <div class="avstack">${activeMembers().slice(0,8).map(m=>`<div class="avatar" title="${esc(m.name)}">${initials(m.name)}</div>`).join('')}</div>
+    <div><div style="font-weight:600;">${activeMembers().length} directors in good standing</div><div class="sub">Quorum is ${quorum()} members</div></div></div></div>`;
+}
+
+/* ============ meetings ============ */
+function viewMeetings(){
+  const sorted=[...db.meetings].sort((a,b)=>parseLocal(b.date)-parseLocal(a.date));
+  const up=sorted.filter(m=>daysUntil(m.date)>=0).reverse();
+  const past=sorted.filter(m=>daysUntil(m.date)<0);
+  const rowHtml=m=>{ const present=Object.values(m.attendance||{}).filter(v=>v==='present').length; const isPast=daysUntil(m.date)<0;
+    return `<div class="row"><div class="meta"><div class="t">${esc(m.title)}</div><div class="d">${fmtDate(m.date)} · ${esc(m.time)} · ${esc(m.location)}</div></div>
+      <div class="right">${isPast?`<span class="pill ${present>=quorum()?'green':'clay'}"><span class="pdot"></span>${present} attended</span>`:`<span class="pill amber"><span class="pdot"></span>Upcoming</span>`}
+      <button class="btn subtle sm" onclick="openMeeting('${m.id}')">Open</button></div></div>`; };
+  return `<div class="page-head"><div class="eyebrow">Meetings & attendance</div><h1>Meetings</h1><p>Schedule meetings, track who attended, and watch quorum.</p></div>
+    <div class="section-row"><h2>Upcoming</h2><button class="btn" onclick="openMeetingForm()">+ Schedule meeting</button></div>
+    ${up.length?up.map(rowHtml).join(''):`<div class="note">No meetings scheduled.</div>`}
+    ${past.length?`<div class="section-row"><h2>Past</h2></div>${past.map(rowHtml).join('')}`:''}`;
+}
+function openMeeting(id){
+  const m=db.meetings.find(x=>x.id===id); if(!m) return;
+  const present=activeMembers().filter(p=>(m.attendance||{})[p.id]==='present').length;
+  const q=quorum(); const pct=Math.min(100,Math.round(present/q*100));
+  const docs=db.documents.filter(d=>d.meetingId===id);
+  openModal(esc(m.title),`
+    <div class="msub">${fmtDate(m.date)} · ${esc(m.time)} · ${esc(m.location)}</div>
+    ${m.agenda?`<div class="note" style="margin-bottom:16px;"><strong>Agenda.</strong> ${esc(m.agenda)}</div>`:''}
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><strong>Attendance</strong>
+      <span class="pill ${present>=q?'green':'amber'}"><span class="pdot"></span>${present} of ${q} for quorum</span></div>
+    <div class="bar ${present>=q?'':'amber'}"><span style="width:${pct}%"></span></div>
+    <div class="ppl" style="margin-top:14px;">${activeMembers().map(p=>{ const st=(m.attendance||{})[p.id]||'';
+      return `<div class="person"><div class="avatar sm">${initials(p.name)}</div><div class="nm">${esc(p.name)}<div class="role">${esc(p.role)}</div></div>
+        <div class="seg"><button class="${st==='present'?'on-green':''}" onclick="setAttend('${m.id}','${p.id}','present')">Present</button>
+        <button class="${st==='absent'?'on-clay':''}" onclick="setAttend('${m.id}','${p.id}','absent')">Absent</button></div></div>`; }).join('')}</div>
+    ${docs.length?`<div style="margin-top:18px;"><strong>Documents for this meeting</strong>${docs.map(d=>`<div class="signline"><span>${esc(d.title)}</span><a class="doc-link" href="${esc(d.link)}" target="_blank" rel="noopener">Open ↗</a></div>`).join('')}</div>`:''}
+    <div class="modal-foot"><button class="btn danger" onclick="deleteMeeting('${m.id}')">Delete</button><button class="btn subtle" onclick="closeModal()">Done</button></div>`,'620px');
+}
+function setAttend(mid,pid,v){
+  const m=db.meetings.find(x=>x.id===mid); const cur=(m.attendance||{})[pid];
+  act(async()=>{ if(cur===v){ await sbDelete('attendance','meeting_id=eq.'+mid+'&member_id=eq.'+pid); }
+    else { await sbUpsert('attendance',{meeting_id:mid,member_id:pid,status:v,updated_at:new Date().toISOString()},'meeting_id,member_id'); } }, ()=>openMeeting(mid));
+}
+function deleteMeeting(id){ if(!confirm('Delete this meeting?'))return; closeModal(); act(async()=>{ await sbDelete('meetings','id=eq.'+id); }); }
+function openMeetingForm(){
+  openModal('Schedule meeting',`
+    <div class="field"><label>Meeting title</label><input id="f_title" placeholder="Q4 Quarterly Board Meeting"></div>
+    <div class="frow"><div class="field"><label>Date</label><input id="f_date" type="date"></div><div class="field"><label>Time</label><input id="f_time" placeholder="10:00 AM"></div></div>
+    <div class="field"><label>Location or link</label><input id="f_loc" placeholder="Zoom, or office address"></div>
+    <div class="field"><label>Agenda</label><textarea id="f_agenda" placeholder="What's on the agenda?"></textarea></div>
+    <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveMeeting()">Schedule meeting</button></div>`);
+}
+function saveMeeting(){
+  const t=val('f_title'),date=val('f_date'); if(!t||!date){alert('Please add a title and date.');return;}
+  const row={title:t,meeting_date:date,meeting_time:val('f_time')||'TBD',location:val('f_loc')||'TBD',agenda:val('f_agenda')};
+  act(async()=>{ await sbInsert('meetings',row); closeModal(); });
+}
+
+/* ============ documents ============ */
+function viewDocuments(){
+  const sorted=[...db.documents].sort((a,b)=>parseLocal(b.date)-parseLocal(a.date));
+  return `<div class="page-head"><div class="eyebrow">Board materials</div><h1>Documents</h1><p>Share decks, minutes, and policies. Paste a link from anywhere (Drive, Dropbox, your site) and the whole board can open it.</p></div>
+    <div class="section-row"><h2>Library</h2><button class="btn" onclick="openDocForm()">+ Share a document</button></div>
+    ${sorted.length?sorted.map(d=>`<div class="row"><div class="meta"><div class="t">${esc(d.title)} <span class="pill" style="margin-left:6px;">${esc(d.type)}</span></div>
+      <div class="d">${fmtShort(d.date)}${d.meetingId?' · '+esc((db.meetings.find(m=>m.id===d.meetingId)||{}).title||''):''}${d.note?' · '+esc(d.note):''}</div></div>
+      <div class="right"><a class="btn subtle sm" href="${esc(d.link)}" target="_blank" rel="noopener" style="text-decoration:none;">Open ↗</a><button class="btn danger sm" onclick="delDoc('${d.id}')">Remove</button></div></div>`).join(''):`<div class="empty"><div class="big">No documents yet</div>Share your first board deck or policy.</div>`}`;
+}
+function openDocForm(){
+  const meetingOpts=`<option value="">Not tied to a meeting</option>`+db.meetings.map(m=>`<option value="${m.id}">${esc(m.title)}</option>`).join('');
+  openModal('Share a document',`
+    <div class="field"><label>Title</label><input id="f_title" placeholder="Q4 Board Deck"></div>
+    <div class="frow"><div class="field"><label>Type</label><select id="f_type">${['Board deck','Minutes','Policy','Financials','Other'].map(t=>`<option>${t}</option>`).join('')}</select></div>
+      <div class="field"><label>Date</label><input id="f_date" type="date" value="${todayStr()}"></div></div>
+    <div class="field"><label>Link</label><input id="f_link" placeholder="https://..."><div class="hint">Paste a share link from Drive, Dropbox, or anywhere the board can view it.</div></div>
+    <div class="field"><label>Tie to a meeting (optional)</label><select id="f_meeting">${meetingOpts}</select></div>
+    <div class="field"><label>Note (optional)</label><input id="f_note" placeholder="Pre-read before the meeting"></div>
+    <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveDoc()">Share document</button></div>`);
+}
+function saveDoc(){
+  const t=val('f_title'); if(!t){alert('Please add a title.');return;}
+  const row={title:t,doc_type:val('f_type'),doc_date:val('f_date')||todayStr(),link:val('f_link')||'#',meeting_id:val('f_meeting')||null,note:val('f_note')};
+  act(async()=>{ await sbInsert('documents',row); closeModal(); });
+}
+function delDoc(id){ if(!confirm('Remove this document?'))return; act(async()=>{ await sbDelete('documents','id=eq.'+id); }); }
+
+/* ============ updates ============ */
+function viewUpdates(){
+  const sorted=[...db.updates].sort((a,b)=>parseLocal(b.date)-parseLocal(a.date));
+  return `<div class="page-head"><div class="eyebrow">Board communication</div><h1>Updates</h1><p>Post notes and announcements between meetings so the whole board stays in the loop.</p></div>
+    <div class="section-row"><h2>Feed</h2><button class="btn" onclick="openUpdateForm()">+ Post update</button></div>
+    ${sorted.length?sorted.map(u=>`<div class="card" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px;"><div class="avatar">${initials(member(u.authorId).name)}</div>
+      <div><div style="font-weight:600;">${esc(member(u.authorId).name)}</div><div class="sub">${fmtDate(u.date)}</div></div>
+      <button class="btn danger sm" style="margin-left:auto;" onclick="delUpdate('${u.id}')">Remove</button></div>
+      <h3 style="font-size:18px;margin-bottom:5px;">${esc(u.title)}</h3><div style="color:var(--ink-soft);">${esc(u.body)}</div></div>`).join(''):`<div class="empty"><div class="big">Nothing posted yet</div>Share the first update with your board.</div>`}`;
+}
+function openUpdateForm(){
+  openModal('Post an update',`<div class="msub">Posting as ${esc(acting().name)}. Change who you are at the bottom of the menu.</div>
+    <div class="field"><label>Title</label><input id="f_title" placeholder="Q3 deck is posted"></div>
+    <div class="field"><label>Message</label><textarea id="f_body" placeholder="What does the board need to know?"></textarea></div>
+    <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveUpdate()">Post update</button></div>`);
+}
+function saveUpdate(){
+  const t=val('f_title'); if(!t){alert('Please add a title.');return;}
+  const row={title:t,body:val('f_body'),author_id:db.actingId,update_date:todayStr()};
+  act(async()=>{ await sbInsert('updates',row); closeModal(); });
+}
+function delUpdate(id){ if(!confirm('Remove this update?'))return; act(async()=>{ await sbDelete('updates','id=eq.'+id); }); }
+
+/* ============ grants ============ */
+function tally(g){ const v=g.votes||{}; return {yes:Object.values(v).filter(x=>x==='yes').length,no:Object.values(v).filter(x=>x==='no').length,abstain:Object.values(v).filter(x=>x==='abstain').length}; }
+function viewGrants(){
+  const pending=db.grants.filter(g=>g.status==='pending'); const decided=db.grants.filter(g=>g.status!=='pending');
+  const card=g=>{ const t=tally(g); const q=quorum();
+    return `<div class="card" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;"><div style="flex:1;"><h3 style="font-size:18px;">${esc(g.recipient)}</h3><div class="sub">${esc(g.purpose)}</div></div>
+        <div style="text-align:right;"><div style="font-family:'Fraunces',serif;font-size:22px;">${money(g.amount)}</div>
+          <span class="pill ${g.status==='approved'?'green':g.status==='declined'?'clay':'amber'}"><span class="pdot"></span>${g.status[0].toUpperCase()+g.status.slice(1)}</span></div></div>
+      ${g.notes?`<div class="note" style="margin-top:12px;">${esc(g.notes)}</div>`:''}
+      <div class="tally">
+        <div class="t"><div class="n" style="color:var(--pine)">${t.yes}</div><div class="l">Approve</div></div>
+        <div class="t"><div class="n" style="color:var(--clay)">${t.no}</div><div class="l">Decline</div></div>
+        <div class="t"><div class="n" style="color:var(--ink-soft)">${t.abstain}</div><div class="l">Abstain</div></div>
+        <div class="t" style="margin-left:auto;"><div class="n">${t.yes}/${q}</div><div class="l">Toward quorum</div></div></div>
+      <div class="bar ${t.yes>=q?'':'amber'}"><span style="width:${Math.min(100,Math.round(t.yes/q*100))}%"></span></div>
+      <div style="margin-top:14px;border-top:1px solid var(--line-soft);padding-top:12px;"><div style="font-size:13px;font-weight:600;margin-bottom:8px;">Who's responded</div>
+        ${activeMembers().map(p=>{ const pv=(g.votes||{})[p.id]; const label=pv==='yes'?'Approved':pv==='no'?'Declined':pv==='abstain'?'Abstained':'Awaiting'; const cls=pv==='yes'?'green':pv==='no'?'clay':pv==='abstain'?'amber':'';
+          return `<div class="signline"><span>${esc(p.name)} <span class="sub">· ${esc(p.role)}</span></span><span class="pill ${cls}">${cls?'<span class="pdot"></span>':''}${label}</span></div>`; }).join('')}</div>
+      ${g.status==='pending'?`<div style="border-top:1px solid var(--line-soft);padding-top:12px;margin-top:12px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Your vote, ${esc((acting().name||'').split(' ')[0])}:</div>
+        <div class="seg" style="margin-bottom:12px;">
+          <button class="${(g.votes||{})[db.actingId]==='yes'?'on-green':''}" onclick="vote('${g.id}','yes')">Approve</button>
+          <button class="${(g.votes||{})[db.actingId]==='no'?'on-clay':''}" onclick="vote('${g.id}','no')">Decline</button>
+          <button class="${(g.votes||{})[db.actingId]==='abstain'?'on-amber':''}" onclick="vote('${g.id}','abstain')">Abstain</button></div>
+        <div class="hint">${t.yes>=q?'Quorum reached. craig marks this approved automatically.':'Approves automatically once '+q+' directors approve. '+t.yes+' so far.'}</div>
+        <div style="margin-top:10px;"><button class="btn danger sm" onclick="decideGrant('${g.id}','declined')">Mark declined</button></div></div>`
+      :`<div class="sub" style="border-top:1px solid var(--line-soft);padding-top:10px;margin-top:12px;">${g.status==='approved'?'Approved by the board.':'Declined by the board.'}</div>`}</div>`; };
+  return `<div class="page-head"><div class="eyebrow">Grant approvals</div><h1>Grants</h1><p>Submit grants for the board, collect votes, and record the decision. A grant passes with ${quorum()} approvals.</p></div>
+    <div class="section-row"><h2>Awaiting a vote</h2><button class="btn" onclick="openGrantForm()">+ Submit grant</button></div>
+    ${pending.length?pending.map(card).join(''):`<div class="note">No grants waiting on the board.</div>`}
+    ${decided.length?`<div class="section-row"><h2>Decided</h2></div>${decided.map(card).join('')}`:''}`;
+}
+function vote(gid,v){
+  const g=db.grants.find(x=>x.id===gid); const cur=(g.votes||{})[db.actingId];
+  act(async()=>{
+    if(cur===v){ await sbDelete('grant_votes','grant_id=eq.'+gid+'&member_id=eq.'+db.actingId); }
+    else { await sbUpsert('grant_votes',{grant_id:gid,member_id:db.actingId,vote:v,voted_at:new Date().toISOString()},'grant_id,member_id'); }
+    const rows=await sbGet('grant_votes?select=vote&grant_id=eq.'+gid);
+    if(g.status==='pending' && rows.filter(r=>r.vote==='yes').length>=quorum()){ await sbUpdate('grants','id=eq.'+gid,{status:'approved'}); }
+  });
+}
+function decideGrant(id,status){ if(!confirm(status==='declined'?'Record this grant as declined?':'Record this grant as approved?'))return; act(async()=>{ await sbUpdate('grants','id=eq.'+id,{status}); }); }
+function openGrantForm(){
+  openModal('Submit a grant',`
+    <div class="field"><label>Recipient organization</label><input id="f_rec" placeholder="Riverside Community Health"></div>
+    <div class="field"><label>Amount</label><input id="f_amt" type="number" placeholder="50000"></div>
+    <div class="field"><label>Purpose</label><input id="f_purpose" placeholder="Mobile clinic for rural counties"></div>
+    <div class="field"><label>Notes (optional)</label><textarea id="f_notes" placeholder="Context for the board"></textarea></div>
+    <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveGrant()">Submit for vote</button></div>`);
+}
+function saveGrant(){
+  const r=val('f_rec'); if(!r){alert('Please add a recipient.');return;}
+  const row={recipient:r,amount:Number(val('f_amt'))||0,purpose:val('f_purpose'),notes:val('f_notes'),status:'pending',grant_date:todayStr()};
+  act(async()=>{ await sbInsert('grants',row); closeModal(); });
+}
+
+/* ============ signatures ============ */
+function isExecuted(s){ const c=Object.keys(s.signed||{}).length; return s.requireAll ? c>=activeMembers().length : c>=quorum(); }
+function viewSignatures(){
+  const open=db.signatures.filter(s=>!isExecuted(s)); const done=db.signatures.filter(s=>isExecuted(s));
+  const card=s=>{ const need=s.requireAll?activeMembers().length:quorum(); const have=Object.keys(s.signed||{}).length; const mine=(s.signed||{})[db.actingId]; const ex=isExecuted(s);
+    return `<div class="card" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;"><div style="flex:1;"><h3 style="font-size:18px;">${esc(s.title)}</h3><div class="sub">${esc(s.type)} · ${fmtShort(s.date)}</div></div>
+        <span class="pill ${ex?'green':'amber'}"><span class="pdot"></span>${ex?'Fully executed':have+' of '+need+' signed'}</span></div>
+      <div class="note" style="margin-top:12px;">${esc(s.body)}</div>
+      <div style="margin-top:14px;">${activeMembers().map(p=>{ const sg=(s.signed||{})[p.id];
+        return `<div class="signline"><span>${esc(p.name)} <span class="sub">· ${esc(p.role)}</span></span>${sg?`<span class="signed">${esc(p.name)} <span class="sub" style="font-style:normal;font-family:'Hanken Grotesk';">${fmtShort(sg)}</span></span>`:`<span class="sub">Not signed</span>`}</div>`; }).join('')}</div>
+      <div class="modal-foot" style="justify-content:space-between;"><button class="btn danger sm" onclick="delSig('${s.id}')">Remove</button>
+        ${mine?`<button class="btn subtle" onclick="unsign('${s.id}')">Remove my signature</button>`:`<button class="btn" onclick="sign('${s.id}')">Sign as ${esc((acting().name||'').split(' ')[0])}</button>`}</div></div>`; };
+  return `<div class="page-head"><div class="eyebrow">Sign-offs & consents</div><h1>Signatures</h1><p>Collect board sign-offs on resolutions and consents. Each person signs and craig records their name and the time.</p></div>
+    <div class="note" style="margin-bottom:20px;">This is a board record of approval, not a certified e-signature. When you're ready for legally binding signing, we can connect a service like DocuSign.</div>
+    <div class="section-row"><h2>Awaiting signatures</h2><button class="btn" onclick="openSigForm()">+ New document</button></div>
+    ${open.length?open.map(card).join(''):`<div class="note">Nothing to sign right now.</div>`}
+    ${done.length?`<div class="section-row"><h2>Executed</h2></div>${done.map(card).join('')}`:''}`;
+}
+function sign(id){ act(async()=>{ await sbUpsert('signoffs',{consent_id:id,member_id:db.actingId,signed_at:new Date().toISOString()},'consent_id,member_id'); }); }
+function unsign(id){ act(async()=>{ await sbDelete('signoffs','consent_id=eq.'+id+'&member_id=eq.'+db.actingId); }); }
+function delSig(id){ if(!confirm('Remove this document?'))return; act(async()=>{ await sbDelete('consents','id=eq.'+id); }); }
+function openSigForm(){
+  openModal('New document to sign',`
+    <div class="field"><label>Title</label><input id="f_title" placeholder="Board Resolution: 2026 Budget"></div>
+    <div class="field"><label>Type</label><select id="f_type">${['Board resolution','Unanimous written consent','Policy adoption','Other'].map(t=>`<option>${t}</option>`).join('')}</select></div>
+    <div class="field"><label>What everyone is signing</label><textarea id="f_body" placeholder="RESOLVED, that..."></textarea></div>
+    <div class="field"><label>Signatures required</label><select id="f_req"><option value="quorum">Quorum (${quorum()} members)</option><option value="all">All ${activeMembers().length} directors (unanimous)</option></select></div>
+    <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveSig()">Create document</button></div>`);
+}
+function saveSig(){
+  const t=val('f_title'); if(!t){alert('Please add a title.');return;}
+  const row={title:t,consent_type:val('f_type'),body:val('f_body'),consent_date:todayStr(),require_all:val('f_req')==='all'};
+  act(async()=>{ await sbInsert('consents',row); closeModal(); });
+}
+
+/* ============ governance ============ */
+function viewGovernance(){
+  return `<div class="page-head"><div class="eyebrow">Board & bylaws</div><h1>Governance</h1><p>Your board roster, roles, and terms. Quorum is set to a majority of active directors.</p></div>
+    <div class="grid g3" style="margin-bottom:8px;">
+      <div class="card stat"><div class="num">${activeMembers().length}</div><div class="lbl">Active directors</div></div>
+      <div class="card stat"><div class="num">${quorum()}</div><div class="lbl">Needed for quorum</div></div>
+      <div class="card stat"><div class="num">${db.signatures.filter(isExecuted).length}</div><div class="lbl">Executed documents</div></div></div>
+    <div class="section-row"><h2>Board roster</h2><div style="display:flex;gap:9px;"><button class="btn subtle" onclick="openOrgForm()">Edit organization</button><button class="btn" onclick="openMemberForm()">+ Add director</button></div></div>
+    ${db.members.map(m=>`<div class="row"><div class="avatar">${initials(m.name)}</div>
+      <div class="meta"><div class="t">${esc(m.name)} ${m.status!=='active'?'<span class="pill clay">Inactive</span>':''}</div>
+        <div class="d">${esc(m.role)} · ${esc(m.email)}${m.termEnd?' · term ends '+fmtShort(m.termEnd):''}</div></div>
+      <div class="right"><button class="btn subtle sm" onclick="openMemberForm('${m.id}')">Edit</button><button class="btn danger sm" onclick="delMember('${m.id}')">Remove</button></div></div>`).join('')}`;
+}
+function openMemberForm(id){
+  const m=id?db.members.find(x=>x.id===id):null;
+  openModal(m?'Edit director':'Add director',`
+    <div class="field"><label>Name</label><input id="f_name" value="${m?esc(m.name):''}" placeholder="Full name"></div>
+    <div class="frow"><div class="field"><label>Role</label><select id="f_role">${['Chair','Vice Chair','Treasurer','Secretary','Director'].map(r=>`<option ${m&&m.role===r?'selected':''}>${r}</option>`).join('')}</select></div>
+      <div class="field"><label>Status</label><select id="f_status"><option value="active" ${m&&m.status==='active'?'selected':''}>Active</option><option value="inactive" ${m&&m.status==='inactive'?'selected':''}>Inactive</option></select></div></div>
+    <div class="field"><label>Email</label><input id="f_email" value="${m?esc(m.email):''}" placeholder="name@example.org"></div>
+    <div class="field"><label>Term ends (optional)</label><input id="f_term" type="date" value="${m?esc(m.termEnd||''):''}"></div>
+    <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveMember('${id||''}')">${m?'Save changes':'Add director'}</button></div>`);
+}
+function saveMember(id){
+  const name=val('f_name'); if(!name){alert('Please add a name.');return;}
+  const data={name,role:val('f_role'),status:val('f_status'),email:val('f_email'),term_end:val('f_term')||null};
+  act(async()=>{ if(id){ await sbUpdate('members','id=eq.'+id,data); } else { await sbInsert('members',data); } closeModal(); });
+}
+function delMember(id){
+  if(activeMembers().length<=2){ alert('Keep at least two directors on the board.'); return; }
+  if(!confirm('Remove this director? Their past votes and signatures are removed too.'))return;
+  if(db.actingId===id) db.actingId=null;
+  act(async()=>{ await sbDelete('members','id=eq.'+id); });
+}
+function openOrgForm(){ openModal('Organization',`<div class="field"><label>Organization name</label><input id="f_org" value="${esc(db.org)}"></div>
+  <div class="modal-foot"><button class="btn subtle" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveOrg()">Save</button></div>`); }
+function saveOrg(){ const name=val('f_org')||db.org; act(async()=>{ await sbUpdate('settings','id=eq.1',{org_name:name}); closeModal(); }); }
+
+/* ============ modal ============ */
+function openModal(title,bodyHtml,maxw){ document.getElementById('modalRoot').innerHTML=`<div class="scrim" onclick="if(event.target===this)closeModal()"><div class="modal" style="${maxw?'max-width:'+maxw:''}"><h2>${title}</h2>${bodyHtml}</div></div>`; }
+function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
+function val(id){ const e=document.getElementById(id); return e?e.value.trim():''; }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeModal(); });
+
+/* ============ boot ============ */
+async function boot(){ try{ setBusy(true); await loadAll(); render(); }catch(e){ showFatal(e); }finally{ setBusy(false); } }
+boot();
+</script>
+</body>
+</html>
