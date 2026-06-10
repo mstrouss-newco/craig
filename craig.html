@@ -49,7 +49,15 @@
   .card h3{font-size:18px;margin-bottom:3px;}
   .card .sub{color:var(--ink-soft);font-size:13px;}
   .stat .num{font-family:'Spectral',serif;font-size:38px;font-weight:500;color:var(--ink);line-height:1;}
-  .stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:8px;} .keydates{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:6px;} .kd{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);border-left:3px solid var(--line);} .kd.has{border-left-color:var(--pine);} .kd .kd-kind{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;} .kd .kd-when{font-family:'Spectral',serif;font-size:19px;margin-top:6px;color:var(--ink);} .kd .kd-title{font-size:13px;color:var(--ink-soft);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;} .kd .kd-rel{font-size:12px;color:var(--ochre);font-weight:600;margin-top:6px;} .kd.empty .kd-when{color:var(--ink-soft);font-size:15px;font-family:'Public Sans';}
+  .stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:8px;}
+.keydates{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:6px;}
+.kd{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);border-left:3px solid var(--line);}
+.kd.has{border-left-color:var(--pine);}
+.kd .kd-kind{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;}
+.kd .kd-when{font-family:'Spectral',serif;font-size:19px;margin-top:6px;color:var(--ink);}
+.kd .kd-title{font-size:13px;color:var(--ink-soft);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.kd .kd-rel{font-size:12px;color:var(--ochre);font-weight:600;margin-top:6px;}
+.kd.empty .kd-when{color:var(--ink-soft);font-size:15px;font-family:'Public Sans';}
   .section-row{display:flex;align-items:center;justify-content:space-between;margin:30px 0 14px;}
   .section-row h2{font-size:21px;}
   .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:9px;border:1px solid var(--pine);background:var(--pine);color:#fff;font-weight:600;font-size:14px;transition:background .12s,transform .05s;}
@@ -281,9 +289,21 @@ function render(){
 /* ============ dashboard ============ */
 function nextMeeting(){
   const up = db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date));
-  return up[0]||null; } const MEETING_KINDS=['Board','Marketing','Committee','Fundraiser','Event','Other']; function upcomingMeetings(){ return db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date)); } function nextOfKind(kind){ return upcomingMeetings().find(m=>(m.kind||'Board')===kind)||null;
+  return up[0]||null;
 }
-return up[0]||null; } const MEETING_KINDS=['Board','Marketing','Committee','Fundraiser','Event','Other']; function upcomingMeetings(){ return db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date)); } function nextOfKind(kind){ return upcomingMeetings().find(m=>(m.kind||'Board')===kind)||null;
+const MEETING_KINDS=['Board','Marketing','Committee','Fundraiser','Event','Other'];
+function upcomingMeetings(){ return db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date)); }
+function nextOfKind(kind){ return upcomingMeetings().find(m=>(m.kind||'Board')===kind)||null; }
+function keyDatesHtml(){
+  const kinds=MEETING_KINDS.filter(k=>k!=='Other');
+  const cells=kinds.map(k=>{ const m=nextOfKind(k);
+    if(!m) return `<div class="kd empty"><div class="kd-kind">${esc(k)}</div><div class="kd-when">Nothing scheduled</div></div>`;
+    const dl=daysUntil(m.date); const rel=dl===0?'Today':dl===1?'Tomorrow':'in '+dl+' days';
+    return `<div class="kd has"><div class="kd-kind">${esc(k)}</div><div class="kd-when">${fmtShort(m.date)}</div><div class="kd-title">${esc(m.title)}</div><div class="kd-rel">${rel}</div></div>`;
+  }).join('');
+  return `<div class="section-row"><h2>Key dates</h2><button class="btn ghost sm" onclick="go('meetings')">All meetings</button></div><div class="keydates">${cells}</div>`;
+}
+function viewDashboard(){
   const hour=new Date().getHours();
   const greet=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
   const mt=nextMeeting();
@@ -357,7 +377,8 @@ function setAttend(mid,pid,v){
 function deleteMeeting(id){ if(!confirm('Delete this meeting?'))return; closeModal(); act(async()=>{ await sbDelete('meetings','id=eq.'+id); }); }
 function openMeetingForm(){ const preKind='Board';
   openModal('Schedule meeting',`
-    <div class="field"><label>Meeting title</label><input id="f_title" placeholder="Q4 Quarterly Board Meeting"></div> <div class="field"><label>Kind</label><select id="f_kind">${MEETING_KINDS.map(k=>`<option ${k===preKind?'selected':''}>${k}</option>`).join('')}</select><div class="hint">Board, marketing, committee, a fundraiser, or another event. Shows in Key dates on the dashboard.</div></div>
+    <div class="field"><label>Meeting title</label><input id="f_title" placeholder="Q4 Quarterly Board Meeting"></div>
+<div class="field"><label>Kind</label><select id="f_kind">${MEETING_KINDS.map(k=>`<option ${k===preKind?'selected':''}>${k}</option>`).join('')}</select><div class="hint">Board, marketing, committee, a fundraiser, or another event. This is what groups it under Key dates on the dashboard.</div></div>
     <div class="frow"><div class="field"><label>Date</label><input id="f_date" type="date"></div><div class="field"><label>Time</label><input id="f_time" placeholder="10:00 AM"></div></div>
     <div class="field"><label>Location or link</label><input id="f_loc" placeholder="Zoom, or office address"></div>
     <div class="field"><label>Agenda</label><textarea id="f_agenda" placeholder="What's on the agenda?"></textarea></div>
