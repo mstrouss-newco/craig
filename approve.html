@@ -98,7 +98,7 @@ async function loadAll(){
     sbGet('grants?select=*&order=grant_date.desc'),sbGet('grant_votes?select=*'),sbGet('consents?select=*&order=consent_date.desc'),sbGet('signoffs?select=*')]);
   db.org=(settings[0]&&settings[0].org_name)||'Your board';
   db.members=members.map(m=>({id:m.id,name:m.name,role:m.role,email:m.email,status:m.status,token:m.access_token}));
-  db.meetings=meetings.map(mt=>({id:mt.id,title:mt.title,date:mt.meeting_date,time:mt.meeting_time,location:mt.location,agenda:mt.agenda,
+  db.meetings=meetings.map(mt=>({id:mt.id,title:mt.title,date:mt.meeting_date,time:mt.meeting_time,location:mt.location,agenda:mt.agenda,kind:mt.kind||'Board',
     attendance:Object.fromEntries(attendance.filter(a=>a.meeting_id===mt.id).map(a=>[a.member_id,a.status]))}));
   db.documents=documents.map(d=>({id:d.id,title:d.title,type:d.doc_type,date:d.doc_date,link:d.link,note:d.note}));
   db.updates=updates.map(u=>({id:u.id,title:u.title,body:u.body,authorId:u.author_id,date:u.update_date}));
@@ -158,7 +158,7 @@ function meetingBlock(){
   const up=db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date));
   const m=up[0]; if(!m) return '';
   const my=(m.attendance||{})[me.id];
-  return `<div class="section-label">Next meeting</div>
+  return `<div class="section-label">Next ${(m.kind&&m.kind!=='Board')?esc(m.kind.toLowerCase())+' meeting':'meeting'}</div>
     <div class="card"><div class="gname">${esc(m.title)}</div>
       <div class="meeting-when">${fmtDate(m.date)} · ${esc(m.time)}</div>
       <div class="hint" style="margin-top:0;">${esc(m.location)}</div>
