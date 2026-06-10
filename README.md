@@ -1,9 +1,10 @@
 # craig
 
-craig is a board management tool for a nonprofit / foundation board. It has two parts that share one database:
+craig is a board management tool for a nonprofit / foundation board. There is a public landing page, plus two parts that share one database:
 
-1. **craig.html** is the staff dashboard (the back office that the organization runs internally).
-2. **approve.html** is the board member portal (the page that goes out to directors by a link).
+1. **index.html** is the landing page (the public front door that explains what craig does and links to the two apps below). This is what GitHub Pages serves at the root.
+2. **craig.html** is the staff dashboard (the back office that the organization runs internally).
+3. **approve.html** is the board member portal (the page that goes out to directors by a link).
 
 Both are plain HTML files. There is no build step, no framework, and no server to run. You open the file and it works.
 
@@ -31,7 +32,7 @@ Both are plain HTML files. There is no build step, no framework, and no server t
 - **Single file HTML.** Each file is fully self contained: HTML, CSS, and JavaScript all in one file. No external project files.
 - **Vanilla JavaScript.** No React, no jQuery, no Supabase SDK. Data access is direct `fetch()` calls to the Supabase REST API.
 - **No build step.** There is nothing to compile or bundle. Editing the file is the whole workflow.
-- **Hosting: GitHub Pages.** The repo is served as a static site. Pushing to the repo updates the live site.
+- **Hosting: GitHub Pages.** The repo is served as a static site at https://mstrouss-newco.github.io/craig/ . Pushing to the repo updates the live site. index.html is the landing page that opens at the root, and it links on to craig.html and approve.html. When a feature is added or changed in a meaningful way, update index.html too so the landing page keeps describing what craig actually does.
 - **Backend: Supabase**, which is a hosted Postgres database with an automatic REST API (PostgREST).
 
 Why it is built this way: the founder (Mike) is non technical and wants files he can host anywhere with zero tooling. Keep this approach unless there is a strong reason to change it and Mike agrees. Do not introduce a framework or a build pipeline without checking first.
@@ -88,7 +89,7 @@ If you change the database shape, change it in `craig-setup.sql` and in BOTH htm
 ## Design system (keep the look consistent)
 
 - Colors: warm paper background `#EAE7DE`, card `#FBFAF6`, ink `#23211C`, pine green `#2F5D4F` (primary and "approved"), ochre `#BC8439` (pending), clay `#A8503C` (declined / negative).
-- Fonts: Fraunces (serif) for headings and the craig wordmark, Hanken Grotesk for body, both from Google Fonts.
+- Fonts: Spectral (serif) for headings and the craig wordmark, Public Sans for body, both from Google Fonts. Public Sans is a civic typeface (it was made for US government public sites), which fits a nonprofit that serves the public. Spectral gives the headings a warm, editorial feel. This pairing replaced the earlier Fraunces and Hanken Grotesk to give craig its own look.
 - Tone: warm, calm, plain spoken. The product is named after a person on purpose. It should feel like a trustworthy chief of staff, not enterprise software.
 
 ---
