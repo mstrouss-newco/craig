@@ -3,135 +3,202 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>craig, board management for a small foundation</title>
-<meta name="description" content="craig is a calm, plain spoken board management tool for a nonprofit board. A staff dashboard and a board member portal that share one database.">
+<title>craig, board and grants management for nonprofits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
---paper:#EAE7DE;--card:#FBFAF6;--ink:#23211C;--ink-soft:#5C584E;
---pine:#2F5D4F;--pine-deep:#244A3F;--ochre:#BC8439;--clay:#A8503C;
---line:#D9D3C6;--line-soft:#E7E2D6;--shadow:0 1px 2px rgba(35,33,28,.05),0 8px 24px rgba(35,33,28,.06);
---radius:14px;
+  --bg:#070A12; --bg2:#0C111D; --panel:#11182A; --panel2:#161F36;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.14);
+  --txt:#F4F6FB; --muted:#9AA6C0; --faint:#6B7793;
+  --brand:#6E8BFF; --brand2:#A57BFF; --accent:#37E0B0;
+  --radius:18px;
 }
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{background:var(--paper);color:var(--ink);font-family:'Public Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
-h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em;}
-a{color:var(--pine);}
-.wrap{max-width:1020px;margin:0 auto;padding:0 24px;}
-header{padding:26px 0;}
-.brand{display:flex;align-items:baseline;gap:8px;}
-.brand .mark{font-family:'Spectral',serif;font-weight:500;font-size:30px;color:var(--ink);letter-spacing:-.02em;}
-.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--ochre);transform:translateY(-3px);}
-.brand .tag{font-size:11px;color:var(--ink-soft);letter-spacing:.05em;text-transform:uppercase;margin-left:6px;}
-.hero{padding:56px 0 34px;}
-.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ochre);font-weight:700;margin-bottom:14px;}
-.hero h1{font-size:48px;max-width:16ch;}
-.hero p.lead{font-size:19px;color:var(--ink-soft);max-width:60ch;margin:18px 0 0;}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:11px;border:1px solid var(--pine);background:var(--pine);color:#fff;font-weight:600;font-size:15px;text-decoration:none;transition:background .12s,transform .05s;}
-.btn:hover{background:var(--pine-deep);}
-.btn:active{transform:translateY(1px);}
-.btn.ghost{background:transparent;color:var(--pine);}
-.btn.ghost:hover{background:var(--line-soft);}
-.section{padding:30px 0;}
-.section h2{font-size:30px;margin-bottom:8px;}
-.section .sub{color:var(--ink-soft);max-width:62ch;margin:0 0 26px;}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
-.feature{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
-.feature h3{font-size:20px;margin-bottom:7px;}
-.feature p{margin:0;color:var(--ink-soft);font-size:15px;}
-.feature .ico{font-family:'Spectral',serif;font-size:24px;color:var(--pine);margin-bottom:10px;display:block;}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px;}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);}
-.panel.staff{border-top:4px solid var(--pine);}
-.panel.board{border-top:4px solid var(--ochre);}
-.panel h3{font-size:22px;margin-bottom:4px;}
-.panel .who{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:14px;}
-.panel ul{margin:0 0 20px;padding-left:18px;color:var(--ink-soft);}
-.panel li{margin-bottom:7px;}
-.how{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);}
-.how p{color:var(--ink-soft);margin:0 0 12px;}
-.how p:last-child{margin-bottom:0;}
-.how strong{color:var(--ink);font-weight:600;}
-footer{padding:40px 0 60px;color:var(--ink-soft);font-size:14px;border-top:1px solid var(--line);margin-top:30px;}
-footer a{font-weight:600;text-decoration:none;}
-@media(max-width:760px){
-.hero h1{font-size:34px;}.hero p.lead{font-size:17px;}
-.grid,.two{grid-template-columns:1fr;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.display{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.04}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(7,10,18,.72);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em}
+.logo .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:700}
+.nav-links{display:flex;align-items:center;gap:28px;font-size:15px;color:var(--muted);font-weight:500}
+.nav-links a:hover{color:var(--txt)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:15px;padding:11px 20px;border-radius:11px;border:1px solid transparent;cursor:pointer;transition:.18s;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 8px 30px -8px rgba(110,139,255,.6)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 36px -8px rgba(110,139,255,.75)}
+.btn-ghost{background:rgba(255,255,255,.04);border-color:var(--line2);color:var(--txt)}
+.btn-ghost:hover{background:rgba(255,255,255,.09)}
+
+/* hero */
+.hero{position:relative;padding:118px 0 96px}
+.hero:before{content:"";position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1100px;height:700px;background:radial-gradient(50% 50% at 50% 50%,rgba(110,139,255,.22),transparent 70%);filter:blur(20px);z-index:0}
+.hero:after{content:"";position:absolute;top:40px;right:-120px;width:520px;height:520px;background:radial-gradient(50% 50% at 50% 50%,rgba(165,123,255,.18),transparent 70%);z-index:0}
+.hero .wrap{position:relative;z-index:1;text-align:center;max-width:880px}
+.pill{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line2);padding:7px 15px;border-radius:100px;margin-bottom:30px}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.hero h1{font-size:68px;font-weight:700;margin-bottom:26px}
+.hero h1 .grad{background:linear-gradient(115deg,var(--brand),var(--brand2) 60%,var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.lead{font-size:21px;color:var(--muted);max-width:680px;margin:0 auto 40px}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero .btn{padding:14px 26px;font-size:16px}
+
+/* stat row */
+.stats{display:flex;justify-content:center;gap:54px;flex-wrap:wrap;margin-top:64px;padding-top:44px;border-top:1px solid var(--line)}
+.stat{text-align:center}
+.stat .n{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;background:linear-gradient(135deg,var(--brand),var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .l{font-size:14px;color:var(--faint);margin-top:4px}
+
+/* section */
+section{position:relative;z-index:1}
+.section{padding:96px 0}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin-bottom:16px;text-align:center}
+.h2{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;letter-spacing:-.02em;text-align:center;line-height:1.1}
+.sub{font-size:18px;color:var(--muted);text-align:center;max-width:620px;margin:18px auto 0}
+
+/* feature grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:58px}
+.card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:30px;transition:.2s}
+.card:hover{border-color:var(--line2);transform:translateY(-3px);background:linear-gradient(180deg,var(--panel2),var(--bg2))}
+.card .ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;background:rgba(110,139,255,.12);border:1px solid rgba(110,139,255,.25)}
+.card h3{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;margin-bottom:9px}
+.card p{font-size:15px;color:var(--muted);line-height:1.55}
+
+/* split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:58px}
+.panel{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:38px}
+.panel .tag{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.panel h3{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:600;margin-bottom:18px}
+.panel ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:28px}
+.panel li{display:flex;gap:12px;font-size:15.5px;color:var(--muted)}
+.panel li:before{content:"";flex:0 0 20px;height:20px;margin-top:1px;border-radius:6px;background:linear-gradient(135deg,var(--brand),var(--brand2));position:relative}
+.check{flex:0 0 20px;height:20px;margin-top:1px;border-radius:6px;background:rgba(55,224,176,.15);border:1px solid rgba(55,224,176,.4);color:var(--accent);font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* cta band */
+.band{margin:0 0 0;padding:0}
+.band .inner{position:relative;overflow:hidden;border-radius:26px;border:1px solid var(--line2);background:linear-gradient(135deg,rgba(110,139,255,.16),rgba(165,123,255,.12));padding:66px 40px;text-align:center}
+.band .inner:before{content:"";position:absolute;inset:0;background:radial-gradient(60% 120% at 50% 0%,rgba(110,139,255,.25),transparent 60%)}
+.band h2{position:relative;font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
+.band p{position:relative;color:var(--muted);font-size:18px;max-width:560px;margin:0 auto 32px}
+.band .hero-cta{position:relative}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;margin-top:96px}
+footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--faint);font-size:14px}
+
+@media(max-width:860px){
+  .nav-links a:not(.btn){display:none}
+  .hero{padding:72px 0 60px}
+  .hero h1{font-size:42px}
+  .hero p.lead{font-size:18px}
+  .section{padding:64px 0}
+  .h2,.band h2{font-size:30px}
+  .grid{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .stats{gap:32px}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-<div class="brand"><span class="mark">craig</span><span class="dot"></span><span class="tag">board management</span></div>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="logo" href="#"><span class="mark">c</span> craig</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#roles">How it works</a>
+      <a class="btn btn-primary" href="craig.html">Open dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="pill"><span class="dot"></span> Built for nonprofit boards and grantmaking</span>
+    <h1 class="display">Run your board and grants <span class="grad">without the chaos.</span></h1>
+    <p class="lead">craig is the operating system for executive directors. Schedule meetings, move grants to a vote, collect signatures, and keep your board aligned, all in one place your directors actually use.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="craig.html">Open the dashboard</a>
+      <a class="btn btn-ghost" href="approve.html">Board member portal</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">6</div><div class="l">tools in one place</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">live record, always in sync</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">passwords for directors</div></div>
+    </div>
+  </div>
 </header>
 
-<section class="hero">
-<div class="eyebrow">For a nonprofit board, built for AI to maintain</div>
-<h1>The calm chief of staff for your board.</h1>
-<p class="lead">craig keeps a foundation board running between meetings: schedule the next meeting, collect grant votes, gather signatures on resolutions, share documents, and keep the roster straight. Staff work from a dashboard, directors get a simple portal, and both read and write the same live record.</p>
-<div class="cta">
-<a class="btn" href="craig.html">Open the staff dashboard</a>
-<a class="btn ghost" href="approve.html">Open the board member portal</a>
-</div>
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="eyebrow">Everything in one place</div>
+    <h2 class="h2">The work between board meetings, handled</h2>
+    <p class="sub">Stop chasing votes over email and digging through inboxes for the latest deck. craig gives your board a single source of truth.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">&#128197;</div><h3>Meetings</h3><p>Schedule the next meeting, track RSVPs, and watch a live quorum count so you always know whether you can do business.</p></div>
+      <div class="card"><div class="ico">&#128176;</div><h3>Grants</h3><p>Move a grant to a vote, collect each director's decision, and see who has responded. It approves automatically the moment votes reach quorum.</p></div>
+      <div class="card"><div class="ico">&#9997;</div><h3>Signatures</h3><p>Gather sign-offs on resolutions and consents with a clean record of who signed and when, including unanimous written consents.</p></div>
+      <div class="card"><div class="ico">&#128196;</div><h3>Documents</h3><p>Share decks, minutes, and policies with a link, tied to the meeting they belong to so nothing gets lost.</p></div>
+      <div class="card"><div class="ico">&#128172;</div><h3>Updates</h3><p>Post short notes to the board between meetings, so no one is caught off guard when everyone gets back in the room.</p></div>
+      <div class="card"><div class="ico">&#127963;</div><h3>Governance</h3><p>Keep the roster, roles, terms, and status tidy and current, the foundation everything else relies on.</p></div>
+    </div>
+  </div>
 </section>
 
-<section class="section">
-<h2>What craig does</h2>
-<p class="sub">Seven jobs, one place. Everything a small board needs to stay in good order, with nothing it does not.</p>
-<div class="grid">
-<div class="feature"><span class="ico">&#9737;</span><h3>Meetings</h3><p>Schedule meetings, track attendance, and watch a live quorum bar so you always know if you can do business.</p></div>
-<div class="feature"><span class="ico">&#10003;</span><h3>Grants</h3><p>Submit a grant, collect each director's vote, and see who has responded. A grant approves itself the moment votes reach quorum.</p></div>
-<div class="feature"><span class="ico">&#9998;</span><h3>Signatures</h3><p>Collect sign offs on resolutions and consents, with a clear record of who signed and when, including unanimous consents.</p></div>
-<div class="feature"><span class="ico">&#9783;</span><h3>Documents</h3><p>Share decks, minutes, and policies by link, optionally tied to the meeting they belong to.</p></div>
-<div class="feature"><span class="ico">&#9993;</span><h3>Updates</h3><p>Post short notes to the board between meetings so nobody is surprised at the next one.</p></div>
-<div class="feature"><span class="ico">&#9737;</span><h3>Governance</h3><p>Keep the board roster, roles, terms, status, and the organization's name all in one tidy place.</p></div>
-</div>
+<section class="section" id="roles">
+  <div class="wrap">
+    <div class="eyebrow">Two views, one record</div>
+    <h2 class="h2">Made for the people who run the board</h2>
+    <p class="sub">The executive director gets command of everything. Directors get a calm, simple place to do their part.</p>
+    <div class="split">
+      <div class="panel">
+        <div class="tag">For the executive director</div>
+        <h3>The command center</h3>
+        <ul>
+          <li><span class="check">&#10003;</span> See the next meeting, open votes, and pending signatures at a glance</li>
+          <li><span class="check">&#10003;</span> Run meetings, grants, signatures, documents, and updates from one screen</li>
+          <li><span class="check">&#10003;</span> Manage the full board roster and governance details</li>
+        </ul>
+        <a class="btn btn-primary" href="craig.html">Open the dashboard</a>
+      </div>
+      <div class="panel">
+        <div class="tag">For your board members</div>
+        <h3>The director portal</h3>
+        <ul>
+          <li><span class="check">&#10003;</span> Open a personal link, with no password to remember</li>
+          <li><span class="check">&#10003;</span> RSVP to meetings, vote on grants, and sign consents in seconds</li>
+          <li><span class="check">&#10003;</span> Read the latest updates and open shared documents</li>
+        </ul>
+        <a class="btn btn-ghost" href="approve.html">Open the portal</a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section class="section">
-<h2>Two doors, one record</h2>
-<p class="sub">craig is two pages that share a single database. Whatever a director does in the portal shows up in the dashboard right away, and the reverse.</p>
-<div class="two">
-<div class="panel staff">
-<div class="who">For staff</div>
-<h3>The dashboard</h3>
-<ul>
-<li>See the next meeting, pending votes, and pending signatures at a glance</li>
-<li>Run meetings, grants, signatures, documents, and updates</li>
-<li>Manage the board roster and governance details</li>
-</ul>
-<a class="btn" href="craig.html">Open the dashboard</a>
-</div>
-<div class="panel board">
-<div class="who">For board members</div>
-<h3>The portal</h3>
-<ul>
-<li>Open a personal link, no password to remember</li>
-<li>RSVP to the next meeting, vote on grants, sign consents</li>
-<li>Read updates and open shared documents</li>
-</ul>
-<a class="btn ghost" href="approve.html">Open the portal</a>
-</div>
-</div>
+<section class="section band">
+  <div class="wrap">
+    <div class="inner">
+      <h2 class="display">Give your board its time back.</h2>
+      <p>Everything a small foundation needs to stay in good order, and nothing it does not.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="craig.html">Open the dashboard</a>
+        <a class="btn btn-ghost" href="approve.html">Board member portal</a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section class="section">
-<h2>How it is built</h2>
-<div class="how">
-<p>craig is deliberately simple. Each page is <strong>one self contained HTML file</strong>: the markup, the styling, and the JavaScript all live together. There is no framework, no build step, and no server to run.</p>
-<p>Data lives in a hosted database and is read and written directly over a REST API, so a change a director makes is saved and visible everywhere at once. The whole thing is served as a static site on GitHub Pages, which means pushing to the repository is the only deploy step.</p>
-<p>It is built this way on purpose: files you can host anywhere, with zero tooling, that keep working without anyone babysitting them.</p>
-</div>
-</section>
-
-<footer class="wrap">
-craig &middot; board management for a small foundation. Source on <a href="https://github.com/mstrouss-newco/craig">GitHub</a>.
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#"><span class="mark">c</span> craig</a>
+    <div>Board and grants management for nonprofits.</div>
+  </div>
 </footer>
-</div>
+
 </body>
 </html>
