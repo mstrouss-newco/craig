@@ -49,7 +49,7 @@
   .card h3{font-size:18px;margin-bottom:3px;}
   .card .sub{color:var(--ink-soft);font-size:13px;}
   .stat .num{font-family:'Spectral',serif;font-size:38px;font-weight:500;color:var(--ink);line-height:1;}
-  .stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:8px;}
+  .stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:8px;} .keydates{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px;margin-bottom:6px;} .kd{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);border-left:3px solid var(--line);} .kd.has{border-left-color:var(--pine);} .kd .kd-kind{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;} .kd .kd-when{font-family:'Spectral',serif;font-size:19px;margin-top:6px;color:var(--ink);} .kd .kd-title{font-size:13px;color:var(--ink-soft);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;} .kd .kd-rel{font-size:12px;color:var(--ochre);font-weight:600;margin-top:6px;} .kd.empty .kd-when{color:var(--ink-soft);font-size:15px;font-family:'Public Sans';}
   .section-row{display:flex;align-items:center;justify-content:space-between;margin:30px 0 14px;}
   .section-row h2{font-size:21px;}
   .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:9px;border:1px solid var(--pine);background:var(--pine);color:#fff;font-weight:600;font-size:14px;transition:background .12s,transform .05s;}
@@ -212,7 +212,7 @@ async function loadAll(){
   ]);
   db.org = (settings[0] && settings[0].org_name) || 'Your Foundation';
   db.members = members.map(m=>({id:m.id,name:m.name,role:m.role,email:m.email,termEnd:m.term_end,status:m.status,token:m.access_token}));
-  db.meetings = meetings.map(mt=>({id:mt.id,title:mt.title,date:mt.meeting_date,time:mt.meeting_time,location:mt.location,agenda:mt.agenda,
+  db.meetings = meetings.map(mt=>({id:mt.id,title:mt.title,date:mt.meeting_date,time:mt.meeting_time,location:mt.location,agenda:mt.agenda,kind:mt.kind||'Board',
     attendance:Object.fromEntries(attendance.filter(a=>a.meeting_id===mt.id).map(a=>[a.member_id,a.status]))}));
   db.documents = documents.map(d=>({id:d.id,title:d.title,type:d.doc_type,date:d.doc_date,meetingId:d.meeting_id,link:d.link,note:d.note}));
   db.updates = updates.map(u=>({id:u.id,title:u.title,body:u.body,authorId:u.author_id,date:u.update_date}));
@@ -281,9 +281,9 @@ function render(){
 /* ============ dashboard ============ */
 function nextMeeting(){
   const up = db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date));
-  return up[0]||null;
+  return up[0]||null; } const MEETING_KINDS=['Board','Marketing','Committee','Fundraiser','Event','Other']; function upcomingMeetings(){ return db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date)); } function nextOfKind(kind){ return upcomingMeetings().find(m=>(m.kind||'Board')===kind)||null;
 }
-function viewDashboard(){
+return up[0]||null; } const MEETING_KINDS=['Board','Marketing','Committee','Fundraiser','Event','Other']; function upcomingMeetings(){ return db.meetings.filter(m=>daysUntil(m.date)>=0).sort((a,b)=>parseLocal(a.date)-parseLocal(b.date)); } function nextOfKind(kind){ return upcomingMeetings().find(m=>(m.kind||'Board')===kind)||null;
   const hour=new Date().getHours();
   const greet=hour<12?'Good morning':hour<18?'Good afternoon':'Good evening';
   const mt=nextMeeting();
@@ -302,7 +302,7 @@ function viewDashboard(){
       <div style="margin-top:16px;"><button class="btn subtle" onclick="go('meetings')">Go to meetings</button></div></div>`;
   }
   return `<div class="page-head"><div class="eyebrow">${esc(db.org)}</div>
-    <h1>${greet}, ${esc((acting().name||'there').split(' ')[0])}.</h1><p>Here's where the board stands today.</p></div>
+    <h1>${greet}, ${esc((acting().name||'there').split(' ')[0])}.</h1><p>Here's where the board stands today.</p></div>${keyDatesHtml()}
   <div class="grid g2">${hero}
     <div class="grid" style="gap:16px;">
       <div class="card stat"><div class="num">${pg}</div><div class="lbl">Grants awaiting a vote</div>${pg?`<div style="margin-top:12px;"><button class="btn ghost sm" onclick="go('grants')">Review grants</button></div>`:''}</div>
@@ -323,7 +323,7 @@ function viewMeetings(){
   const up=sorted.filter(m=>daysUntil(m.date)>=0).reverse();
   const past=sorted.filter(m=>daysUntil(m.date)<0);
   const rowHtml=m=>{ const present=Object.values(m.attendance||{}).filter(v=>v==='present').length; const isPast=daysUntil(m.date)<0;
-    return `<div class="row"><div class="meta"><div class="t">${esc(m.title)}</div><div class="d">${fmtDate(m.date)} · ${esc(m.time)} · ${esc(m.location)}</div></div>
+    return `<div class="row"><div class="meta"><div class="t">${esc(m.title)} <span class="pill" style="margin-left:4px;">${esc(m.kind||'Board')}</span></div><div class="d">${fmtDate(m.date)} · ${esc(m.time)} · ${esc(m.location)}</div></div>
       <div class="right">${isPast?`<span class="pill ${present>=quorum()?'green':'clay'}"><span class="pdot"></span>${present} attended</span>`:`<span class="pill amber"><span class="pdot"></span>Upcoming</span>`}
       <button class="btn subtle sm" onclick="openMeeting('${m.id}')">Open</button></div></div>`; };
   return `<div class="page-head"><div class="eyebrow">Meetings & attendance</div><h1>Meetings</h1><p>Schedule meetings, track who attended, and watch quorum.</p></div>
@@ -355,9 +355,9 @@ function setAttend(mid,pid,v){
     else { await sbUpsert('attendance',{meeting_id:mid,member_id:pid,status:v,updated_at:new Date().toISOString()},'meeting_id,member_id'); } }, ()=>openMeeting(mid));
 }
 function deleteMeeting(id){ if(!confirm('Delete this meeting?'))return; closeModal(); act(async()=>{ await sbDelete('meetings','id=eq.'+id); }); }
-function openMeetingForm(){
+function openMeetingForm(){ const preKind='Board';
   openModal('Schedule meeting',`
-    <div class="field"><label>Meeting title</label><input id="f_title" placeholder="Q4 Quarterly Board Meeting"></div>
+    <div class="field"><label>Meeting title</label><input id="f_title" placeholder="Q4 Quarterly Board Meeting"></div> <div class="field"><label>Kind</label><select id="f_kind">${MEETING_KINDS.map(k=>`<option ${k===preKind?'selected':''}>${k}</option>`).join('')}</select><div class="hint">Board, marketing, committee, a fundraiser, or another event. Shows in Key dates on the dashboard.</div></div>
     <div class="frow"><div class="field"><label>Date</label><input id="f_date" type="date"></div><div class="field"><label>Time</label><input id="f_time" placeholder="10:00 AM"></div></div>
     <div class="field"><label>Location or link</label><input id="f_loc" placeholder="Zoom, or office address"></div>
     <div class="field"><label>Agenda</label><textarea id="f_agenda" placeholder="What's on the agenda?"></textarea></div>
@@ -365,7 +365,7 @@ function openMeetingForm(){
 }
 function saveMeeting(){
   const t=val('f_title'),date=val('f_date'); if(!t||!date){alert('Please add a title and date.');return;}
-  const row={title:t,meeting_date:date,meeting_time:val('f_time')||'TBD',location:val('f_loc')||'TBD',agenda:val('f_agenda')};
+  const row={title:t,meeting_date:date,meeting_time:val('f_time')||'TBD',location:val('f_loc')||'TBD',agenda:val('f_agenda'),kind:val('f_kind')||'Board'};
   act(async()=>{ await sbInsert('meetings',row); closeModal(); });
 }
 
