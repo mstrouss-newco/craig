@@ -6,18 +6,18 @@
 <title>Your board · craig</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--paper:#EAE7DE;--card:#FBFAF6;--ink:#23211C;--ink-soft:#5C584E;--pine:#2F5D4F;--pine-deep:#244A3F;--ochre:#BC8439;--clay:#A8503C;--line:#D9D3C6;--line-soft:#E7E2D6;--shadow:0 1px 2px rgba(35,33,28,.05),0 8px 24px rgba(35,33,28,.06);}
   *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:15.5px;line-height:1.5;-webkit-font-smoothing:antialiased;}
-  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Public Sans',system-ui,sans-serif;font-size:15.5px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:500;margin:0;line-height:1.15;letter-spacing:-.01em;}
   button{font-family:inherit;cursor:pointer;}
   input{font-family:inherit;font-size:16px;}
   a{color:var(--pine);}
   .wrap{max-width:640px;margin:0 auto;padding:30px 20px 80px;}
   .top{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
-  .mark{font-family:'Fraunces',serif;font-size:30px;color:var(--ink);letter-spacing:-.02em;}
+  .mark{font-family:'Spectral',serif;font-size:30px;color:var(--ink);letter-spacing:-.02em;}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--ochre);transform:translateY(-3px);}
   .org{font-size:13px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;margin-bottom:26px;}
   .card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px;}
@@ -34,9 +34,9 @@
   .btn.link{background:none;border:none;color:var(--pine);width:auto;padding:4px;font-size:14px;font-weight:600;}
   .greet{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
   .avatar{width:44px;height:44px;border-radius:50%;background:var(--pine);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;}
-  .greet .who{font-family:'Fraunces',serif;font-size:21px;}.greet .role{font-size:13px;color:var(--ink-soft);}
+  .greet .who{font-family:'Spectral',serif;font-size:21px;}.greet .role{font-size:13px;color:var(--ink-soft);}
   .section-label{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ochre);font-weight:700;margin:24px 4px 12px;}
-  .gname{font-size:20px;}.amt{font-family:'Fraunces',serif;font-size:23px;}.purpose{color:var(--ink-soft);margin:6px 0 0;}
+  .gname{font-size:20px;}.amt{font-family:'Spectral',serif;font-size:23px;}.purpose{color:var(--ink-soft);margin:6px 0 0;}
   .note{background:var(--line-soft);border-radius:11px;padding:12px 14px;font-size:13.5px;color:var(--ink-soft);margin-top:14px;}
   .actions{display:flex;gap:10px;margin-top:18px;}.actions .btn{width:auto;flex:1;}
   .abstain-row{margin-top:10px;text-align:center;}
@@ -48,18 +48,18 @@
   .voted{display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft);}
   .stamp{font-weight:700;}.stamp.green{color:var(--pine);}.stamp.clay{color:var(--clay);}.stamp.amber{color:var(--ochre);}
   .done-banner{background:rgba(47,93,79,.1);border:1px solid rgba(47,93,79,.25);border-radius:11px;padding:11px 14px;color:var(--pine);font-weight:600;font-size:14px;margin-top:14px;}
-  .empty{text-align:center;color:var(--ink-soft);padding:30px 10px;}.empty .big{font-family:'Fraunces',serif;font-size:21px;color:var(--ink);margin-bottom:6px;}
-  .meeting-when{font-family:'Fraunces',serif;font-size:18px;margin:4px 0 2px;}
+  .empty{text-align:center;color:var(--ink-soft);padding:30px 10px;}.empty .big{font-family:'Spectral',serif;font-size:21px;color:var(--ink);margin-bottom:6px;}
+  .meeting-when{font-family:'Spectral',serif;font-size:18px;margin:4px 0 2px;}
   .doc-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px dashed var(--line);}
   .doc-row:last-child{border-bottom:none;}
   .doc-row .dt{font-weight:600;}.doc-row .ds{font-size:12.5px;color:var(--ink-soft);}
-  .signed-line{font-family:'Fraunces',serif;font-style:italic;font-size:17px;color:var(--pine);}
+  .signed-line{font-family:'Spectral',serif;font-style:italic;font-size:17px;color:var(--pine);}
   .foot{margin-top:26px;text-align:center;}
   #busy{position:fixed;right:16px;bottom:16px;background:var(--ink);color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;display:none;z-index:80;}
   #busy.on{display:block;}
   #toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;background:var(--clay);color:#fff;padding:11px 16px;border-radius:10px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;z-index:90;max-width:92%;}
   #toast.on{display:block;}
-  .fatal{text-align:center;margin-top:50px;}.fatal .big{font-family:'Fraunces',serif;font-size:24px;margin-bottom:8px;}
+  .fatal{text-align:center;margin-top:50px;}.fatal .big{font-family:'Spectral',serif;font-size:24px;margin-bottom:8px;}
   .fatal .detail{background:var(--line-soft);border-radius:10px;padding:12px;font-size:12px;color:var(--ink-soft);text-align:left;margin:14px 0;font-family:ui-monospace,monospace;word-break:break-word;}
   :focus-visible{outline:2px solid var(--ochre);outline-offset:2px;}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
